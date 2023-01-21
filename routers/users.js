@@ -34,13 +34,13 @@ routers.post(
   "/bookappointment",
   isAuth.isAuth,
   [
-    body("therapistId").trim().isLength({ min: 5 }),
-    body("userId").trim().isLength({ min: 5 }),
-    body("disorderType").trim().isLength({ min: 5 }),
-    body("therapistname").trim().isLength({ min: 5 }),
-    body("therapistEmail").trim().isLength({ min: 5 }),
-    body("userEmail").trim().isLength({ min: 5 }),
-    body("username").trim().isLength({ min: 5 }),
+    body("therapistId").trim(),
+    body("userId").trim(),
+    body("disorderType").trim(),
+    body("therapistname").trim(),
+    body("therapistEmail").trim(),
+    body("userEmail").trim(),
+    body("username").trim()
   ],
   appointmentController.bookAppointment
 );
@@ -51,8 +51,7 @@ routers.post(
   "/usersignup",
   [
     body("email").isEmail().normalizeEmail(),
-    body("name").trim().isLength({ min: 1 }),
-    body("password").isLength({ min: 5 }),
+    body("name").trim()
   ],
   userOTPController.postLogin
 );
