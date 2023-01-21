@@ -9,12 +9,12 @@ const {validationResult} = require('express-validator')
 
 exports.therapistSignup = (req, res, next) => {
   
-  const error = validationResult(req)
-  if(error.isEmpty()){
-    return res.status(400).json({
-      error: error.array(),
-    })
-  }
+  // const error = validationResult(req)
+  // if(error.isEmpty()){
+  //   return res.status(400).json({
+  //     error: error.array(),
+  //   })
+  // }
   const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;

@@ -10,12 +10,12 @@ exports.postLogin = (req, res, next) => {
   const password = req.body.password;
   const name = req.body.name;
 
-  const error = validationResult(req)
-  if(error.isEmpty()){
-    return res.status(400).json({
-       error: error.array(),
-    })
-  }
+  // const error = validationResult(req)
+  // if(error.isEmpty()){
+  //   return res.status(400).json({
+  //      error: error.array(),
+  //   })
+  // }
   //   check if user exist in the data base if not the  you have to insert the user
 
   User.findOne({ email: email }).then((user) => {

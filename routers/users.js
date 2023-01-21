@@ -33,15 +33,15 @@ routers.post("/tharapistlogin", authController.therapistLogin);
 routers.post(
   "/bookappointment",
   isAuth.isAuth,
-  [
-    body("therapistId").trim(),
-    body("userId").trim(),
-    body("disorderType").trim(),
-    body("therapistname").trim(),
-    body("therapistEmail").trim(),
-    body("userEmail").trim(),
-    body("username").trim()
-  ],
+  // [
+  //   body("therapistId").trim(),
+  //   body("userId").trim(),
+  //   body("disorderType").trim(),
+  //   body("therapistname").trim(),
+  //   body("therapistEmail").trim(),
+  //   body("userEmail").trim(),
+  //   body("username").trim()
+  // ],
   appointmentController.bookAppointment
 );
 
@@ -49,20 +49,20 @@ routers.get("/getTherapists", isAuth.isAuth, usersController.getTherapist);
 routers.get("/getsessions", isAuth.isAuth, usersController.getAppointment);
 routers.post(
   "/usersignup",
-  [
-    body("email").isEmail().normalizeEmail(),
-    body("name").trim()
-  ],
+  // [
+  //   body("email").isEmail().normalizeEmail(),
+  //   body("name").trim()
+  // ],
   userOTPController.postLogin
 );
 routers.post(
   "/userSignupConfirm",
-  [body("OTP").trim().isLength({ min: 3 })],
+  // [body("OTP").trim().isLength({ min: 3 })],
   userOTPController.confirmUser
 );
 routers.post(
   "/therapistReg",
-  [body("email").isEmail().normalizeEmail()],
+  // [body("email").isEmail().normalizeEmail()],
   therapistConfirmationController.therapistSignup
 );
 routers.post(
