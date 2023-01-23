@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken");
 // therapistId  63c492a14844ec81f6857be5
 // userId: 63c52072c5d7026234154644
 exports.bookAppointment = (req, res, next) => {
-  const userId = req.body.userId;
+  const userId = req.userId;
   const therapistId = req.body.therapistId;
   const appointmentTime = req.body.appointmentTime;
   const day = req.body.day;

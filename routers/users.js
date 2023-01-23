@@ -44,7 +44,6 @@ routers.post(
   "/bookappointment",
   [
     body("therapistId").notEmpty(),
-    body("userId").notEmpty(),
     body("disorderType").notEmpty(),
     body("therapistname").notEmpty(),
     body("therapistEmail").notEmpty(),
@@ -75,12 +74,12 @@ routers.post(
   userOTPController.postLogin
 );
 routers.post(
-  "/userSignupConfirm",
+  "/usersignupconfirm",
   [body("OTP").trim().isLength({ min: 4 })],
   userOTPController.confirmUser
 );
 routers.post(
-  "/therapistsigup",
+  "/therapistsignup",
   [
     body("name").notEmpty(),
     body("email").isEmail().normalizeEmail(),
@@ -108,7 +107,7 @@ routers.post(
 );
 
 routers.post(
-  "/userOnboarding",
+  "/useronboarding",
   [
     body("hobbies").notEmpty(),
     body("stateOfOrigin").notEmpty(),
@@ -117,7 +116,7 @@ routers.post(
   userOnbaordingController.userOnbaording
 );
 routers.post(
-  "/therapistOnboarding",
+  "/therapistonboarding",
   [
     body("hobbies").notEmpty(),
     body("stateOfOrigin").notEmpty(),
