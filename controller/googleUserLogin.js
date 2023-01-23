@@ -10,6 +10,8 @@ exports.googleAuthUser = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const password = req.body.id;
   const location = req.body.location
+
+ 
   User.findOne({ email: email })
     .then((user) => {
       if (user) {

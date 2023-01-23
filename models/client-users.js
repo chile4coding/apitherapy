@@ -33,7 +33,6 @@ const clientUserSchema = new Schema({
   },
   expires: {
     type: Number,
-    required: true,
   },
   boarded: {
     type: Boolean,
