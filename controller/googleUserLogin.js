@@ -9,6 +9,7 @@ exports.googleAuthUser = (req, res, next) => {
   const name = req.body.name;
   const imageUrl = req.body.imageUrl;
   const password = req.body.id;
+  const location = req.body.location
   User.findOne({ email: email })
     .then((user) => {
       if (user) {
@@ -27,7 +28,8 @@ exports.googleAuthUser = (req, res, next) => {
           userId: user._id.toString(),
           email: user.email,
           activated: user.activated,
-          boarder: user.boarded
+          boarder: user.boarded,
+          location: user.location
         });
       } else {
         bcrypt.hash(password, 12).then((hashPw) => {
@@ -45,7 +47,8 @@ exports.googleAuthUser = (req, res, next) => {
             imageUrl: imageUrl,
             OTP: otp,
             activated: true,
-            boarded: false
+            boarded: false,
+            location : location
           });
           newUser.save().then((user) => {
             const token = jwt.sign(
@@ -64,7 +67,8 @@ exports.googleAuthUser = (req, res, next) => {
               email: user.email,
               activated: user. activated,
               boarder: user.boarded,
-              googleUser: true
+              googleUser: true,
+              location: user.location
             });
           });
         });

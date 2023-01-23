@@ -5,12 +5,22 @@ const isAuth = require("../controller/isAuth");
 const { body } = require("express-validator");
 const appointmentController = require("../controller/appointment");
 const usersController = require("../controller/users");
-const routers = express.Router();
 const userOTPController = require("../controller/userOtpSetup");
 const therapistConfirmationController = require("../controller/therapistOtpSetup");
 const googleAuthenticationController = require("../controller/googleUserLogin");
+const userEditController = require("../controller/usereditprofile");
+const faqController = require("../controller/faq");
+const userOnbaordingController = require("../controller/userOnboarding");
+const routers = express.Router();
 
-routers.post("/userlogin", authController.postClientLogin);
+routers.post(
+  "/userlogin",
+  [
+    body("email").isEmail().normalizeEmail(),
+    body("password").isLength({ min: 5 }),
+  ],
+  authController.postClientLogin
+);
 
 routers.get("/dashboard", isAuth.isAuth, dashboardController.getDashBoard);
 routers.get(
@@ -29,19 +39,26 @@ routers.post(
   dashboardController.therapistProfilePics
 );
 
-routers.post("/tharapistlogin", authController.therapistLogin);
+routers.post("/therapistlogin", authController.therapistLogin);
 routers.post(
   "/bookappointment",
+  [
+    body("therapistId").notEmpty(),
+    body("userId").notEmpty(),
+    body("disorderType").notEmpty(),
+    body("therapistname").notEmpty(),
+    body("therapistEmail").notEmpty(),
+    body("userEmail").notEmpty(),
+    body("username").notEmpty(),
+    body("phoneNumber").notEmpty(),
+    body("DOB").notEmpty(),
+    body("meetingType").notEmpty(),
+    body("day").notEmpty(),
+    body("appointmentTime").notEmpty(),
+    body("description").notEmpty(),
+  ],
   isAuth.isAuth,
-  // [
-  //   body("therapistId").trim(),
-  //   body("userId").trim(),
-  //   body("disorderType").trim(),
-  //   body("therapistname").trim(),
-  //   body("therapistEmail").trim(),
-  //   body("userEmail").trim(),
-  //   body("username").trim()
-  // ],
+
   appointmentController.bookAppointment
 );
 
@@ -49,27 +66,105 @@ routers.get("/getTherapists", isAuth.isAuth, usersController.getTherapist);
 routers.get("/getsessions", isAuth.isAuth, usersController.getAppointment);
 routers.post(
   "/usersignup",
-  // [
-  //   body("email").isEmail().normalizeEmail(),
-  //   body("name").trim()
-  // ],
+
+  [
+    body("email").isEmail().normalizeEmail(),
+    body("name").notEmpty().trim(),
+    body("password").isLength({ min: 5 }),
+  ],
   userOTPController.postLogin
 );
 routers.post(
   "/userSignupConfirm",
-  // [body("OTP").trim().isLength({ min: 3 })],
+  [body("OTP").trim().isLength({ min: 4 })],
   userOTPController.confirmUser
 );
 routers.post(
-  "/therapistReg",
-  // [body("email").isEmail().normalizeEmail()],
+  "/therapistsigup",
+  [
+    body("name").notEmpty(),
+    body("email").isEmail().normalizeEmail(),
+    body("password").isLength({ min: 5 }),
+    body("location").notEmpty(),
+    body("liscense").notEmpty(),
+    body("specialty").notEmpty(),
+  ],
   therapistConfirmationController.therapistSignup
 );
+
+/*
+req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
+  const location = req.body.location;
+  const specialty = req.body.specialty;
+  const liscense = req.body.liscense;
+
+*/
 routers.post(
-  "/therapistConfirmReg",
-  [body("OTP").trim().isLength({ min: 3 })],
+  "/therapistconfirmsignup",
+  [body("OTP").trim().isLength({ min: 4 })],
   therapistConfirmationController.confirmTherapistUser
 );
+
+routers.post(
+  "/userOnboarding",
+  [
+    body("hobbies").notEmpty(),
+    body("stateOfOrigin").notEmpty(),
+    body("marriageStatus").notEmpty(),
+  ],
+  userOnbaordingController.userOnbaording
+);
+routers.post(
+  "/therapistOnboarding",
+  [
+    body("hobbies").notEmpty(),
+    body("stateOfOrigin").notEmpty(),
+    body("marriageStatus").notEmpty(),
+  ],
+  userOnbaordingController.therapistOnbaording
+);
 routers.post("/googleUserLogin", googleAuthenticationController.googleAuthUser);
+routers.put(
+  "/edituserptofile",
+  [
+    body("email").notEmpty(),
+    body("name").notEmpty(),
+    body("location").notEmpty(),
+  ],
+  isAuth.isAuth,
+  userEditController.editUser
+);
+routers.put(
+  "/edittherapistprofile",
+  [
+    body("email").notEmpty(),
+    body("name").notEmpty(),
+    body("location").notEmpty(),
+    body("specialty").notEmpty(),
+    body("liscense").notEmpty(),
+  ],
+  isAuth.isAuth,
+  userEditController.editTherapistUser
+);
+
+routers.post("/sendfaq", [
+  body("email").notEmpty(),
+  body("name").notEmpty(),
+  body("message").notEmpty(),
+  body("questionType").notEmpty(),
+], faqController.postFaq);
+routers.get("/getfaqs", faqController.getFaq);
+
+/*
+ const location = req.body.location;
+  const specialty = req.body.specialty;
+  const liscense = req.body.liscense;
+  const email = req.body.email;
+  const name = req.body.name;
+  const location = req.body.location;
+  const userId = req.userId;
+*/
 
 module.exports = routers;

@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 const Appointment = require("../models/appointments");
 const { validationResult } = require("express-validator");
 const nodemailer = require("nodemailer");
@@ -21,6 +21,8 @@ exports.bookAppointment = (req, res, next) => {
   const userEmail = req.body.userEmail;
   const therapistEmail = req.body.therapistEmail;
   const therapistname = req.body.therapistname;
+  const phoneNumber = req.body.phoneNumber;
+  const DOB = req.body.DOB;
 
   const error = validationResult(req);
   if (!error.isEmpty()) {
@@ -33,9 +35,9 @@ exports.bookAppointment = (req, res, next) => {
     const payload = {
       iss: process.env.GOOGLE_MEET_API_KEY, //your API KEY "HfYFhXpCTfOwSXklHCKQoQ",
       exp: new Date().getTime() + 5000,
-    };
-    const token = jwt.sign(payload, process.env.API_SECRET) //"g7td1Qic3DfBoJvmb8Ehm4rZ9WTxlJ9np9kQ"); //your API SECRET HERE
-    const email = "chileomereji@gmail.com"; // your zoom developer email account
+    }; //GOOGLE_MEET_API_SECRET
+    const token = jwt.sign(payload, process.env.GOOGLE_MEET_API_SECRET); //"g7td1Qic3DfBoJvmb8Ehm4rZ9WTxlJ9np9kQ"); //your API SECRET HERE
+    const email = "therapyappteam@gmail.com"; //"chileomereji@gmail.com"; // your zoom developer email account
     var options = {
       method: "POST",
       uri: "https://api.zoom.us/v2/users/" + email + "/meetings",
@@ -62,16 +64,16 @@ exports.bookAppointment = (req, res, next) => {
         const transporter = nodemailer.createTransport({
           service: "gmail",
           auth: {
-            user: "chileomereji@gmail.com",
-            pass:process.env.GMAIL_PASSWORD //"eyohirzismtgyqcu", // gmail password
+            user: "therapyappteam@gmail.com",
+            pass: process.env.GMAIL_PASSWORD, //"eyohirzismtgyqcu", // gmail password
           },
         });
 
         const mailOptions = {
-          from: "TherapyApp@gmail.com",
+          from: "therapyappteam@gmail.com",
           to: [therapistEmail, userEmail],
           subject: "Therapy Session",
-          html: `<p> Start link: ${response.start_url} </p> <p> Join link:  ${response.join_url} </p> <p>Password: ${response.password}</p>`,
+          html: `<h3>Here is your therapy session details </h3> <hr/> <h3>Day & Time: ${day} / ${appointmentTime}</h3> <h3></h3><p>  <b>Start link:</b><a href="${response.start_url}">${response.start_url}</a>  </p> <p> Join link: <a href="${response.join_url}">${response.join_url}</a> </p> <p><b>Password:<b> ${response.password}</p> <h3>Therapist Name: ${therapistname} </h3> <h3>Therapist Email: ${therapistEmail} </h3> <h3>Client Name: ${username} </h3> <h3>Client Email: ${userEmail} </h3> `,
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
@@ -100,6 +102,8 @@ exports.bookAppointment = (req, res, next) => {
             response.start_url +
             " Join link" +
             response.password,
+          phoneNumber: phoneNumber,
+          DOB: DOB,
         });
         createAppointment.save().then((result) => {
           return res.status(200).json({
@@ -118,7 +122,7 @@ exports.bookAppointment = (req, res, next) => {
             seeionLink: result.seeionLink,
           });
         });
-        
+
         console.log("response is: ", response);
       })
       .catch(function (err) {
@@ -139,11 +143,41 @@ exports.bookAppointment = (req, res, next) => {
       meetingType: meetingType,
       seeionLink: "",
       description: description,
+      phoneNumber: phoneNumber,
+      DOB: DOB,
     });
-    createAppointmentOffline.save().then((result) => {
-      return res
-        .status(200)
-        .json({
+    createAppointmentOffline
+      .save()
+      .then((result) => {
+        // =====================================================
+
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: "therapyappteam@gmail.com",
+            pass: process.env.GMAIL_PASSWORD, //"eyohirzismtgyqcu", // gmail password
+          },
+        });
+
+        const mailOptions = {
+          from: "therapyappteam@gmail.com",
+          to: [therapistEmail, userEmail],
+          subject: "Therapy Session",
+          html: `<h2>Here is your therapy session details </h2> <hr/> <h3>Day & Time: ${day} / ${appointmentTime}</h3> <h3>Therapist Name: ${therapistname} </h3> <h3>Therapist Email: ${therapistEmail} </h3> <h3>Client Name: ${username} </h3> <h3>Client Email: ${userEmail} </h3> `,
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log("Email sent: " + info.response);
+            // do something useful
+          }
+        });
+
+        // ==================================================
+
+        return res.status(200).json({
           message: "Appointment successfully booked",
           description: result.description,
           userId: result.userId,
@@ -155,13 +189,13 @@ exports.bookAppointment = (req, res, next) => {
           disorderType: result.disorderType,
           meetingType: result.meetingType,
           seeionLink: result.seeionLink,
-        })
+        });
       })
       .catch((err) => {
         return res.status(400).json({
           message:
             "Error occurred while taking your booking, please book again!",
         });
-    });
+      });
   }
 };

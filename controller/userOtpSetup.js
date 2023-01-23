@@ -9,13 +9,14 @@ exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const name = req.body.name;
+  const location =req.body.location
 
-  // const error = validationResult(req)
-  // if(error.isEmpty()){
-  //   return res.status(400).json({
-  //      error: error.array(),
-  //   })
-  // }
+  const error = validationResult(req)
+  if(!error.isEmpty()){
+    return res.status(400).json({
+       error: error.array(),
+    })
+  }
   //   check if user exist in the data base if not the  you have to insert the user
 
   User.findOne({ email: email }).then((user) => {
@@ -37,7 +38,8 @@ exports.postLogin = (req, res, next) => {
           imageUrl: "",
           OTP: otp,
           activated: false,
-          expires: new Date().getTime() + 10,
+          location: location,
+          expires: new Date().getTime() + 1800000,
           boarded: false, //    also send a  mail to the user email with his otp
         });
         return newUser.save();
@@ -46,15 +48,15 @@ exports.postLogin = (req, res, next) => {
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "chileomereji@gmail.com",
+          user: "therapyappteam@gmail.com",
           pass: process.env.GMAIL_PASSWORD, //"eyohirzismtgyqcu", // gmail password
         },
       });
       const mailOptions = {
-        from: "TherapyApp@gmail.com",
+        from: "therapyappteam@gmail.com",
         to: email,
         subject: "TherapyApp Registration Code",
-        html: `<p> Enter your Registration code to confirm your registration </p> <br/> <h3>Code:   ${otp}</h3>`,
+        html: `<p>Dear ${name}, Enter your Registration code to confirm your registration </p><hr/> <h3>Code:  ${otp}</h3>  <p>Registration code expires in 30 minutes</p>`,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
@@ -83,19 +85,20 @@ exports.postLogin = (req, res, next) => {
         user.password = hashPw;
         user.activated = false;
         user.expires = new Date().getTime() + 1800000;
+        user.location = location;
         user.boarded = false;
         const transporter = nodemailer.createTransport({
           service: "gmail",
           auth: {
-            user: "chileomereji@gmail.com",
+            user: "therapyappteam@gmail.com",
             pass: process.env.GMAIL_PASSWORD, //"eyohirzismtgyqcu", // gmail password
           },
         });
         const mailOptions = {
-          from: "TherapyApp@gmail.com",
+          from: "therapyappteam@gmail.com",
           to: email,
           subject: "TherapyApp Registration Code",
-          html: `<p>Dear ${name}, Enter your Registration code to confirm your registration </p>   <hr/> <h3>Code:   ${otp}</h3>  <p>Registration code expires in 30 minutes</p>`,
+          html: `<p>Dear ${name}, Enter your Registration code to confirm your registration </p>   <hr/> <h3>Code:   ${otp}</h3>  <p>Registration code expires in 30 minutes </p>`,
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
@@ -121,6 +124,13 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.confirmUser = (req, res, next) => {
+  const error = validationResult(req)
+  if(!error.isEmpty()){
+    return res.status(400).json({
+       error: error.array(),
+    })
+  }
+
   const OTP = req.body.OTP;
 
   User.findOne({ OTP: OTP }).then((user) => {
@@ -132,13 +142,13 @@ exports.confirmUser = (req, res, next) => {
     }
 
     if (!user.activated) {
+      user.activated = true;
       const currentTime = new Date().getTime();
       if (currentTime > user.expires) {
         return res.status(200).json({
           message: "Registration Code has expired, please register again",
         });
       }
-      user.activated = true;
       user.boarded = false;
 
       user.save();

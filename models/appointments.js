@@ -43,6 +43,12 @@ const appointmentSchema = new Schema(
     description: {
       type: String,
     },
+    phoneNumber:{
+      type: String
+    },
+    DOB:{
+      type: String
+    }
   },
   { timestamps: new Date() }
 );

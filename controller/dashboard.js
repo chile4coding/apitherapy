@@ -70,14 +70,14 @@ exports.uploadProfilePics = (req, res, next) => {
         return next();
       }
       clearInmage(user?.imageUrl);
-      user.imageUrl = imageUrl;
+      user.imageUrl = "https://apitherapy-production.up.railway.app/"+imageUrl;
 
       return user.save();
     })
     .then((updatedUser) => {
       return res.status(200).json({
         message: "Profile ppicture successfully uploaded!",
-        imageUrl: updatedUser.imageUrl,
+        imageUrl: "https://apitherapy-production.up.railway.app/"+updatedUser.imageUrl,
       });
     })
     .catch((err) => {
@@ -108,13 +108,13 @@ exports.therapistProfilePics = (req, res, next) => {
   TherapistUser.findById({ _id: userId })
     .then((user) => {
       clearInmage(user?.imageUrl);
-      user.imageUrl = imageUrl;
+      user.imageUrl ="https://apitherapy-production.up.railway.app/"+ imageUrl;
       return user.save();
     })
     .then((updatedUser) => {
       return res.status(200).json({
         message: "Profile ppicture successfully uploaded!",
-        imageUrl: updatedUser.imageUrl,
+        imageUrl: "https://apitherapy-production.up.railway.app/"+updatedUser.imageUrl,
       });
     })
     .catch((err) => {

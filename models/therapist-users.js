@@ -47,7 +47,7 @@ const TherapistUserSchema = new Schema({
   stateOfOrigin: {
     type: String,
   },
-  mariageStatus: {
+  marriageStatus: {
     type: String,
   },
 });

@@ -9,12 +9,12 @@ const {validationResult} = require('express-validator')
 
 exports.therapistSignup = (req, res, next) => {
   
-  // const error = validationResult(req)
-  // if(error.isEmpty()){
-  //   return res.status(400).json({
-  //     error: error.array(),
-  //   })
-  // }
+  const error = validationResult(req)
+  if(!error.isEmpty()){
+    return res.status(400).json({
+      error: error.array(),
+    })
+  }
   const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
@@ -56,15 +56,15 @@ exports.therapistSignup = (req, res, next) => {
         const transporter = nodemailer.createTransport({
           service: "gmail",
           auth: {
-            user: "chileomereji@gmail.com",
+            user: "therapyappteam@gmail.com",
             pass: process.env.GMAIL_PASSWORD, //"eyohirzismtgyqcu", // gmail password
           },
         });
         const mailOptions = {
-          from: "TherapyApp@gmail.com",
+          from: "therapyappteam@gmail.com",
           to: email,
           subject: "TherapyApp Registration Code",
-          html: `<p> Enter your Registration code to confirm your registration </p> <br/> <h3>Code:   ${otp}</h3>`,
+          html: `<p>Dear ${name}, Enter your Registration code to confirm your registration </p>   <hr/> <h3>Code:   ${otp}</h3>  <p>Registration code expires in 30 minutes</p>`,
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
@@ -99,12 +99,12 @@ exports.therapistSignup = (req, res, next) => {
           const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-              user: "chileomereji@gmail.com",
+              user: "therapyappteam@gmail.com",
               pass: process.env.GMAIL_PASSWORD, //"eyohirzismtgyqcu", // gmail password
             },
           });
           const mailOptions = {
-            from: "TherapyApp@gmail.com",
+            from: "therapyappteam@gmail.com",
             to: email,
             subject: "TherapyApp Registration Code",
             html: `<p>Dear ${name}, Enter your Registration code to confirm your registration </p>   <hr/> <h3>Code:   ${otp}</h3>  <p>Registration code expires in 30 minutes</p>`,
@@ -213,6 +213,12 @@ exports.therapistSignup = (req, res, next) => {
 
 // ===============================================================
 exports.confirmTherapistUser = (req, res, next) => {
+  const error = validationResult(req)
+  if(!error.isEmpty()){
+    return res.status(400).json({
+      error: error.array(),
+    })
+  }
   const OTP = req.body.OTP;
 
   therapist
@@ -225,13 +231,13 @@ exports.confirmTherapistUser = (req, res, next) => {
         });
       }
       if (!user.activated) {
+        user.activated = true;
         const currentTime = new Date().getTime();
         if (currentTime > user.expires) {
           return res.status(200).json({
             message: "Registration Code has expired, please register again",
           });
         }
-        user.activated = true;
         user.boarded = false;
 
         user.save();

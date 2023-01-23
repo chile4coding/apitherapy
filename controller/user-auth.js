@@ -5,27 +5,48 @@ const TherapistUser = require("../models/therapist-users");
 const bcrypt = require("bcryptjs");
 
 
-  exports.postClientLogin = (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
-    console.log("================", req.body);
-    
-    let loadUserId;
-    clientuser.findOne({ email: email }).then((user) => {
+exports.postClientLogin = (req, res, next) => {
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    return res.status(400).json({
+      error: error.array(),
+    });
+  }
+  const email = req.body.email;
+  const password = req.body.password;
+  console.log("================", req.body);
+
+  let loadUserId;
+  clientuser.findOne({ email: email }).then((user) => {
     if (!user) {
       return res.status(400).json({
         message: "User does not exist please sign up",
       });
     }
+    loadUserId = user;
+    if (!loadUserId.activated) {
+      return res.status(400).json({
+        errorMessage: "Please Activate Your Account",
+        activated: false,
+      });
+    }
+    if (!loadUserId.boarded) {
+      return res.status(400).json({
+        errorMessage: "Please Let's Know You!",
+        boarded: false,
+        userId: user._id
+      });
+    }
+
     bcrypt
-    .compare(password, user.password)
+      .compare(password, user.password)
       .then((isEqual) => {
         if (!isEqual) {
           return res.status(400).json({
             errorMessage: "Incorrect Passsword!",
           });
         }
-        loadUserId = user;
+
         const token = jwt.sign(
           {
             email: loadUserId.email,
@@ -40,7 +61,8 @@ const bcrypt = require("bcryptjs");
           userId: loadUserId._id.toString(),
           email: loadUserId.email,
           activated: loadUserId.activated,
-          boarded: loadUserId.boarded
+          boarded: loadUserId.boarded,
+          userType: 'client'
         });
       })
       .catch((err) => {
@@ -51,8 +73,14 @@ const bcrypt = require("bcryptjs");
   });
 };
 
-
 exports.therapistLogin = (req, res, next) => {
+
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    return res.status(400).json({
+      error: error.array(),
+    });
+  }
   const email = req.body.email;
   const password = req.body.password;
 
@@ -64,6 +92,22 @@ exports.therapistLogin = (req, res, next) => {
       });
     }
 
+    loadUserId = user;
+    if (!loadUserId.activated) {
+      return res.status(400).json({
+        errorMessage: "Please Activate Your Account",
+        activated: false,
+      });
+    }
+
+    if (!loadUserId.boarded) {
+      return res.status(400).json({
+        errorMessage: "Please Let's Know You!",
+        boarded: false,
+        userId: user._id
+      });
+    }
+
     bcrypt
       .compare(password, user.password)
       .then((isEqual) => {
@@ -72,7 +116,7 @@ exports.therapistLogin = (req, res, next) => {
             errorMessage: "Incorrect Passsword!",
           });
         }
-        loadUserId = user;
+     
         const token = jwt.sign(
           {
             email: loadUserId.email,
@@ -86,7 +130,9 @@ exports.therapistLogin = (req, res, next) => {
           token: token,
           userId: loadUserId._id.toString(),
           email: loadUserId.email,
-          activated: loadUserId.activated
+          activated: loadUserId.activated,
+          boarded: user.boarded,
+          userType: 'therapist'
         });
       })
       .catch((err) => {
