@@ -15,7 +15,7 @@ exports.getDashBoard = (req, res, next) => {
       message: "Welcome, " + user.name,
       username: user.name,
       email: user.email,
-      imageUrl: "http://localhost:8000/" + user.imageUrl,
+      imageUrl:  user.imageUrl,
       userId: user._id
     });
   });
@@ -35,7 +35,7 @@ exports.getTherapistDashBoard = (req, res, next) => {
       location: user.location,
       specialty: user.specialty,
       liscense: user.liscense,
-      imageUrl: "http://localhost:8000/" + user.imageUrl,
+      imageUrl: user.imageUrl,
       userId: user._id
     });
   }).catch((err) => {
@@ -76,8 +76,8 @@ exports.uploadProfilePics = (req, res, next) => {
     })
     .then((updatedUser) => {
       return res.status(200).json({
-        message: "Profile ppicture successfully uploaded!",
-        imageUrl: "https://apitherapy-production.up.railway.app/"+updatedUser.imageUrl,
+        message: "Profile picture successfully uploaded!",
+        imageUrl: updatedUser.imageUrl,
       });
     })
     .catch((err) => {
@@ -114,7 +114,7 @@ exports.therapistProfilePics = (req, res, next) => {
     .then((updatedUser) => {
       return res.status(200).json({
         message: "Profile ppicture successfully uploaded!",
-        imageUrl: "https://apitherapy-production.up.railway.app/"+updatedUser.imageUrl,
+        imageUrl: updatedUser.imageUrl,
       });
     })
     .catch((err) => {
