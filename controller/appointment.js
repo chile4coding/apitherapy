@@ -4,6 +4,7 @@ const { validationResult } = require("express-validator");
 const nodemailer = require("nodemailer");
 const Clientuser = require("../models/client-users");
 const TherapistUser = require("../models/therapist-users");
+const socket = require("../socket");
 
 const requestPromise = require("request-promise");
 const jwt = require("jsonwebtoken");
@@ -106,6 +107,29 @@ exports.bookAppointment = (req, res, next) => {
           DOB: DOB,
         });
         createAppointment.save().then((result) => {
+          //  emmitting notification to a specific user
+          let recieverId = result.therapistId.toString();
+
+          socket.getIO().emit("notification", {
+            recieverId: recieverId,
+            notification: {
+              message: "Appointment successfully booked",
+              description: result.description,
+              userId: result.userId,
+              userEmail: result.userEmail,
+              username: result.username,
+              therapistEmail: result.email,
+              therapistname: result.name,
+              therapistId: result.therapistId,
+              appointmentTime: result.appointmentTime,
+              day: result.day,
+              disorderType: result.disorderType,
+              meetingType: result.meetingType,
+              seeionLink: result.seeionLink,
+              notification: true,
+            },
+          });
+
           return res.status(200).json({
             message: "Appointment successfully booked",
             description: result.description,
@@ -177,6 +201,25 @@ exports.bookAppointment = (req, res, next) => {
 
         // ==================================================
 
+        let recieverId = result.therapistId.toString();
+
+        socket.getIO().emit("notification", {
+          receiverId: recieverId,
+          notification:{
+            message: "Appointment successfully booked",
+            description: result.description,
+            userId: result.userId,
+            userEmail: result.userEmail,
+            username: result.username,
+            therapistEmail: result.email,
+            therapistname: result.name,
+            day: result.day,
+            disorderType: result.disorderType,
+            meetingType: result.meetingType,
+            seeionLink: result.seeionLink,
+          }
+        });
+
         return res.status(200).json({
           message: "Appointment successfully booked",
           description: result.description,
@@ -189,6 +232,7 @@ exports.bookAppointment = (req, res, next) => {
           disorderType: result.disorderType,
           meetingType: result.meetingType,
           seeionLink: result.seeionLink,
+          notidication: true,
         });
       })
       .catch((err) => {

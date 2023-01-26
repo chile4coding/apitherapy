@@ -35,6 +35,13 @@ mongoose.connect(
   `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.jv9eo4u.mongodb.net/TharapyApp?retryWrites=true&w=majority`
 );
 
-app.listen(PORT, () => {
+const server =  app.listen(PORT, () => {
   console.log("server running at port ");
 });
+
+//  add socket for realtime notification
+const io = require('./socket').init(server)
+
+io.on('connection', socket=>{
+  console.log("A node is conected!")
+})
