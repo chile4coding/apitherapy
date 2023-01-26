@@ -4,7 +4,7 @@ module.exports = {
   init: (httpServer) => {
     io = require("socket.io")(httpServer,{
         cors:{
-            origin: 'http://localhost:5173'
+            origin: 'https://apitherapy-production.up.railway.app'
         }
     });
 
