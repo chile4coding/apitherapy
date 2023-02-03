@@ -28,6 +28,9 @@ exports.postClientLogin = (req, res, next) => {
       return res.status(400).json({
         errorMessage: "Please Activate Your Account",
         activated: false,
+        userId: user._id,
+        username: user.name
+
       });
     }
     if (!loadUserId.boarded) {
