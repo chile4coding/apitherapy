@@ -16,7 +16,8 @@ exports.getDashBoard = (req, res, next) => {
       username: user.name,
       email: user.email,
       imageUrl:  user.imageUrl,
-      userId: user._id
+      userId: user._id,
+      location: user.location
     });
   });
 };
