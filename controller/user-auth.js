@@ -94,12 +94,15 @@ exports.therapistLogin = (req, res, next) => {
         message: "User does not exist please sign up",
       });
     }
+   
 
     loadUserId = user;
     if (!loadUserId.activated) {
       return res.status(400).json({
         errorMessage: "Please Activate Your Account",
         activated: false,
+         username: user.name,
+         userId: user._id,
       });
     }
 
