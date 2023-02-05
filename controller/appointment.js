@@ -10,7 +10,7 @@ const requestPromise = require("request-promise");
 const jwt = require("jsonwebtoken");
 // therapistId  63c492a14844ec81f6857be5
 // userId: 63c52072c5d7026234154644
-exports.bookAppointment = (req, res, next) => {
+exports.bookAppointment =async (req, res, next) => {
   const userId = req.userId;
   const therapistId = req.body.therapistId;
   const appointmentTime = req.body.appointmentTime;
@@ -31,6 +31,7 @@ exports.bookAppointment = (req, res, next) => {
       error: error.array(),
     });
   }
+const userTherapist = await TherapistUser.findById({_id: therapistId.toString()}) 
 
   if (meetingType === "virtual") {
     const payload = {
@@ -105,6 +106,7 @@ exports.bookAppointment = (req, res, next) => {
             response.password,
           phoneNumber: phoneNumber,
           DOB: DOB,
+          therapistImageUrl: userTherapist.imageUrl
         });
         createAppointment.save().then((result) => {
           //  emmitting notification to a specific user
@@ -144,6 +146,7 @@ exports.bookAppointment = (req, res, next) => {
             disorderType: result.disorderType,
             meetingType: result.meetingType,
             seeionLink: result.seeionLink,
+            therapistImageUrl: userTherapist.imageUrl
           });
         });
 
@@ -169,6 +172,7 @@ exports.bookAppointment = (req, res, next) => {
       description: description,
       phoneNumber: phoneNumber,
       DOB: DOB,
+      therapistImageUrl: userTherapist.imageUrl
     });
     createAppointmentOffline
       .save()
@@ -233,6 +237,7 @@ exports.bookAppointment = (req, res, next) => {
           meetingType: result.meetingType,
           seeionLink: result.seeionLink,
           notidication: true,
+          therapistImageUrl: userTherapist.imageUrl
         });
       })
       .catch((err) => {

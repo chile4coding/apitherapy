@@ -20,6 +20,9 @@ const appointmentSchema = new Schema(
       type: String,
       required: true,
     },
+    therapistImageUrl:{
+type: String
+    },
     meetingType: {
       type: String,
      
