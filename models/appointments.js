@@ -20,6 +20,12 @@ const appointmentSchema = new Schema(
       type: String,
       required: true,
     },
+    therapistLocation:{
+      type:String
+    },
+    therapistEmail:{
+      type:String
+    },
     therapistImageUrl: {
       type: String,
     },

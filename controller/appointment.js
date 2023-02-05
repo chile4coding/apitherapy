@@ -106,7 +106,9 @@ const userTherapist = await TherapistUser.findById(therapistId.toString())
             response.password,
           phoneNumber: phoneNumber,
           DOB: DOB,
-          therapistImageUrl: userTherapist.imageUrl
+          therapistImageUrl: userTherapist.imageUrl,
+          therapistLocation:userTherapist.location,
+          
         });
         createAppointment.save().then((result) => {
           //  emmitting notification to a specific user
@@ -129,7 +131,8 @@ const userTherapist = await TherapistUser.findById(therapistId.toString())
               meetingType: result.meetingType,
               seeionLink: result.seeionLink,
               notification: true,
-              therapistImageUrl: userTherapist.imageUrl
+              therapistImageUrl: userTherapist.imageUrl,
+              therapistLocation:userTherapist.location,
             },
           });
 
@@ -147,7 +150,8 @@ const userTherapist = await TherapistUser.findById(therapistId.toString())
             disorderType: result.disorderType,
             meetingType: result.meetingType,
             seeionLink: result.seeionLink,
-            therapistImageUrl: userTherapist.imageUrl
+            therapistImageUrl: userTherapist.imageUrl,
+            therapistLocation:userTherapist.location,
           });
         });
 
@@ -173,7 +177,8 @@ const userTherapist = await TherapistUser.findById(therapistId.toString())
       description: description,
       phoneNumber: phoneNumber,
       DOB: DOB,
-      therapistImageUrl: userTherapist.imageUrl
+      therapistImageUrl: userTherapist.imageUrl,
+      therapistLocation:userTherapist.location,
     });
     createAppointmentOffline
       .save()
@@ -222,7 +227,8 @@ const userTherapist = await TherapistUser.findById(therapistId.toString())
             disorderType: result.disorderType,
             meetingType: result.meetingType,
             seeionLink: result.seeionLink,
-            therapistImageUrl: userTherapist.imageUrl
+            therapistImageUrl: userTherapist.imageUrl,
+            therapistLocation:userTherapist.location,
           }
         });
 
@@ -239,7 +245,8 @@ const userTherapist = await TherapistUser.findById(therapistId.toString())
           meetingType: result.meetingType,
           seeionLink: result.seeionLink,
           notidication: true,
-          therapistImageUrl: userTherapist.imageUrl
+          therapistImageUrl: userTherapist.imageUrl,
+          therapistLocation:userTherapist.location,
         });
       })
       .catch((err) => {
