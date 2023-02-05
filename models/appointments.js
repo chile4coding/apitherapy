@@ -20,12 +20,11 @@ const appointmentSchema = new Schema(
       type: String,
       required: true,
     },
-    therapistImageUrl:{
-type: String
+    therapistImageUrl: {
+      type: String,
     },
     meetingType: {
       type: String,
-     
     },
     seeionLink: {
       type: String,
@@ -46,12 +45,12 @@ type: String
     description: {
       type: String,
     },
-    phoneNumber:{
-      type: String
+    phoneNumber: {
+      type: String,
     },
-    DOB:{
-      type: String
-    }
+    DOB: {
+      type: String,
+    },
   },
   { timestamps: new Date() }
 );

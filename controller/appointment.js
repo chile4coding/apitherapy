@@ -31,7 +31,7 @@ exports.bookAppointment =async (req, res, next) => {
       error: error.array(),
     });
   }
-const userTherapist = await TherapistUser.findById({_id: therapistId.toString()}) 
+const userTherapist = await TherapistUser.findById(therapistId.toString()) 
 
   if (meetingType === "virtual") {
     const payload = {
@@ -129,6 +129,7 @@ const userTherapist = await TherapistUser.findById({_id: therapistId.toString()}
               meetingType: result.meetingType,
               seeionLink: result.seeionLink,
               notification: true,
+              therapistImageUrl: userTherapist.imageUrl
             },
           });
 
@@ -221,6 +222,7 @@ const userTherapist = await TherapistUser.findById({_id: therapistId.toString()}
             disorderType: result.disorderType,
             meetingType: result.meetingType,
             seeionLink: result.seeionLink,
+            therapistImageUrl: userTherapist.imageUrl
           }
         });
 
