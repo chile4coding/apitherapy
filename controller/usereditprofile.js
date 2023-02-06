@@ -73,12 +73,17 @@ exports.editUser = (req, res, next) => {
         user.email = email;
         user.name = name;
         user.location = location;
+        user.specialty = specialty;
+        user.location = location;
+        user.liscense = liscense;
         user.save();
         return res.status(200).json({
           message: "Details successfully saved!",
           name: user.name,
           email: user.email,
           location: user.location,
+          liscense: user.liscense,
+          specialty: user.specialty
         });
       } else {
         return res.status(200).json({
