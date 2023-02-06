@@ -39,7 +39,7 @@ routers.post(
   dashboardController.therapistProfilePics
 );
 
-routers.post("/therapistlogin", authController.therapistLogin);
+routers.post("/userlogin", authController.therapistLogin);
 routers.post(
   "/bookappointment",
   [

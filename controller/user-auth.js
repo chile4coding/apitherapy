@@ -19,9 +19,10 @@ exports.postClientLogin = (req, res, next) => {
   let loadUserId;
   clientuser.findOne({ email: email }).then((user) => {
     if (!user) {
-      return res.status(400).json({
-        message: "User does not exist please sign up",
-      });
+      return next()
+      // res.status(400).json({
+      //   message: "User does not exist please sign up",
+      // });
     }
     loadUserId = user;
     if (!loadUserId.activated) {
