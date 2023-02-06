@@ -41,6 +41,28 @@ exports.getAppointment = (req, res, next) => {
     .find({ userId: userId })
     .then((userAppointment) => {
       
+      if (!userAppointment) {
+        return next();
+    }
+        return res.status(200).json({
+          message: "Session successfully fetched!",
+          sessions: userAppointment,
+        });
+     
+    })
+    .catch((err) => {
+      return res.status(400).json({
+        message: "Server Error!, please refresh your browser",
+      });
+    });
+};
+exports.getTherapistAppointment = (req, res, next) => {
+
+  const userId = req.userId;
+  appointment
+    .find({therapistId: userId })
+    .then((userAppointment) => {
+      
       if (userAppointment.length < 1) {
         return res.status(200).json({
           message: "No session booked!",

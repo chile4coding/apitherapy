@@ -63,6 +63,7 @@ routers.post(
 
 routers.get("/getTherapists", isAuth.isAuth, usersController.getTherapist);
 routers.get("/getsessions", isAuth.isAuth, usersController.getAppointment);
+routers.get("/getsessions", isAuth.isAuth, usersController.getTherapistAppointment);
 routers.post(
   "/usersignup",
 
