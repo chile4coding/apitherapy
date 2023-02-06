@@ -69,7 +69,7 @@ exports.getTherapistAppointment = (req, res, next) => {
         });
     }
         return res.status(200).json({
-          message: "Session successfully fetched!",
+          message: "Therapist Session successfully fetched!",
           sessions: userAppointment,
         });
      
