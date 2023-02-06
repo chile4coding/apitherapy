@@ -66,7 +66,9 @@ exports.postClientLogin = (req, res, next) => {
           email: loadUserId.email,
           activated: loadUserId.activated,
           boarded: loadUserId.boarded,
-          userType: 'client'
+          userType: 'client',
+          name: loadUserId.name,
+          imageUrl: loadUserId.imageUrl
         });
       })
       .catch((err) => {
@@ -139,7 +141,9 @@ exports.therapistLogin = (req, res, next) => {
           email: loadUserId.email,
           activated: loadUserId.activated,
           boarded: user.boarded,
-          userType: 'therapist'
+          userType: 'therapist',
+          name: loadUserId.name,
+          imageUrl: loadUserId.imageUrl
         });
       })
       .catch((err) => {
