@@ -78,7 +78,7 @@ exports.getTherapistAppointment = (req, res, next) => {
 
 exports.getDone = (req, res, next) => {
   const done = req.body.done;
-  const appointmentId = req.body.done;
+  const appointmentId = req.body.id;
   appointment
     .findById({_id:appointmentId})
     .then((userAppointment) => {
