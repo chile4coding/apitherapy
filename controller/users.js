@@ -88,12 +88,11 @@ exports.getDone = (req, res, next) => {
         });
       }
       userAppointment.done = done;
-      return userAppointment.save();
-    })
-    .then((response) => {
+      userAppointment.save();
+
       return res.status(200).json({
         message: "done",
-        appontment: response.done,
+        appontment: userAppointment.done,
       });
     })
     .catch((err) => {
