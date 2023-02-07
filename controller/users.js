@@ -80,7 +80,7 @@ exports.getDone = (req, res, next) => {
   const done = req.body.done;
   const appointmentId = req.body.done;
   appointment
-    .findById(appointmentId)
+    .findById({_id:appointmentId})
     .then((userAppointment) => {
       if (!userAppointment) {
         return res.status(200).json({
