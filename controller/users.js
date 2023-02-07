@@ -77,7 +77,6 @@ exports.getTherapistAppointment = (req, res, next) => {
 };
 
 exports.getDone = (req, res, next) => {
-  const done = req.body.done;
   const appointmentId = req.body.id;
   appointment
     .findById({_id:appointmentId})
@@ -87,7 +86,12 @@ exports.getDone = (req, res, next) => {
           messsage: "No appointmtne with this id!",
         });
       }
-      userAppointment.done = done;
+      if(userAppointment.done){
+        userAppointment.done = false
+      }else{
+        userAppointment.done = true
+      }
+      
       userAppointment.save();
 
       return res.status(200).json({
