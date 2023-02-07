@@ -33,7 +33,7 @@ exports.googleAuthUser = (req, res, next) => {
           boarded: true,
           imageUrl: user.imageUrl,
           name: user.name,
-          userTyp:'client'
+          userType:'client'
         
         });
       } else {
@@ -76,7 +76,7 @@ exports.googleAuthUser = (req, res, next) => {
               googleUser: true,
               imageUrl: user.imageUrl,
               name: user.name,
-              userTyp:'client'
+              userType:'client'
              
             });
           });
