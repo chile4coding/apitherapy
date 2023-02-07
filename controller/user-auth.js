@@ -14,7 +14,7 @@ exports.postClientLogin = (req, res, next) => {
   }
   const email = req.body.email;
   const password = req.body.password;
-  console.log("================", req.body);
+  
 
   let loadUserId;
   clientuser.findOne({ email: email }).then((user) => {
@@ -57,7 +57,7 @@ exports.postClientLogin = (req, res, next) => {
             userId: loadUserId._id.toString(),
           },
           "mysecretmysecretchile",
-          { expiresIn: "3h" }
+          { expiresIn: "10s" }
         );
         return res.status(200).json({
           message: "Login successful",
@@ -132,7 +132,7 @@ exports.therapistLogin = (req, res, next) => {
             userId: loadUserId._id.toString(),
           },
           "mysecretmysecretchile",
-          { expiresIn: "1h" }
+          { expiresIn: "10s" }
         );
         return res.status(200).json({
           message: "Login successful",

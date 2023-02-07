@@ -82,7 +82,7 @@ const userTherapist = await TherapistUser.findById(therapistId.toString())
           if (error) {
             console.log(error);
           } else {
-            console.log("Email sent: " + info.response);
+       
             // do something useful
           }
         });
@@ -155,11 +155,11 @@ const userTherapist = await TherapistUser.findById(therapistId.toString())
           });
         });
 
-        console.log("response is: ", response);
+      
       })
       .catch(function (err) {
         // API call failed...
-        console.log("API call failed, reason ", err);
+       
       });
   } else {
     const createAppointmentOffline = new Appointment({

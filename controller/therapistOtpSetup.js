@@ -71,7 +71,7 @@ exports.therapistSignup = (req, res, next) => {
           if (error) {
             console.log(error);
           } else {
-            console.log("============== Email sent: " + info.response);
+        
             return res.status(200).json({
               message: "OTP sent to your mail, Enter OTP for confirmation",
             });
@@ -114,7 +114,7 @@ exports.therapistSignup = (req, res, next) => {
             if (error) {
               console.log(error);
             } else {
-              console.log("============== Email sent: " + info.response);
+              
               return res.status(200).json({
                 message: "OTP sent to your mail, Enter OTP for confirmation",
               });

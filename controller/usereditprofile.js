@@ -59,7 +59,7 @@ exports.editUser = (req, res, next) => {
     const specialty = req.body.specialty;
     const liscense = req.body.liscense;
     const userId = req.userId.toString();
-    console.log("======================= ", userId)
+   
     
   Therapist.findOne({ _id: userId })
     .then((user) => {
