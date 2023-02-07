@@ -132,7 +132,6 @@ routers.put(
   [
     body("email").notEmpty(),
     body("name").notEmpty(),
-    body("location").notEmpty(),
   ],
   isAuth.isAuth,
   userEditController.editUser
