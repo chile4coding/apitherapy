@@ -108,6 +108,7 @@ const userTherapist = await TherapistUser.findById(therapistId.toString())
           DOB: DOB,
           therapistImageUrl: userTherapist.imageUrl,
           therapistLocation:userTherapist.location,
+          done: false
           
         });
         createAppointment.save().then((result) => {
@@ -179,6 +180,7 @@ const userTherapist = await TherapistUser.findById(therapistId.toString())
       DOB: DOB,
       therapistImageUrl: userTherapist.imageUrl,
       therapistLocation:userTherapist.location,
+      done: false
     });
     createAppointmentOffline
       .save()
