@@ -21,7 +21,7 @@ exports.googleAuthUser = (req, res, next) => {
             userId: user._id.toString(),
           },
           "mysecretmysecretchile",
-          { expiresIn: "10s" }
+          { expiresIn: "2h" }
         );
 
         return res.status(200).json({
@@ -59,7 +59,7 @@ exports.googleAuthUser = (req, res, next) => {
                 userId: user._id.toString(),
               },
               "mysecretmysecretchile",
-              { expiresIn: "10" }
+              { expiresIn: "2h" }
             );
 
             return res.status(200).json({

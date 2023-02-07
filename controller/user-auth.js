@@ -57,7 +57,7 @@ exports.postClientLogin = (req, res, next) => {
             userId: loadUserId._id.toString(),
           },
           "mysecretmysecretchile",
-          { expiresIn: "10s" }
+          { expiresIn: "2h" }
         );
         return res.status(200).json({
           message: "Login successful",
@@ -132,7 +132,7 @@ exports.therapistLogin = (req, res, next) => {
             userId: loadUserId._id.toString(),
           },
           "mysecretmysecretchile",
-          { expiresIn: "10s" }
+          { expiresIn: "2h" }
         );
         return res.status(200).json({
           message: "Login successful",
