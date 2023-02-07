@@ -30,7 +30,7 @@ exports.googleAuthUser = (req, res, next) => {
           userId: user._id.toString(),
           email: user.email,
           activated: true,
-          boarder: true,
+          boarded: true,
           imageUrl: user.imageUrl,
           name: user.name
         
@@ -70,7 +70,7 @@ exports.googleAuthUser = (req, res, next) => {
               userId: user._id.toString(),
               email: user.email,
               activated: true,
-              boarder: true,
+              boarded: true,
               googleUser: true,
               imageUrl: user.imageUrl,
               name: user.name
