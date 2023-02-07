@@ -32,7 +32,8 @@ exports.googleAuthUser = (req, res, next) => {
           activated: true,
           boarded: true,
           imageUrl: user.imageUrl,
-          name: user.name
+          name: user.name,
+          userTyp:'client'
         
         });
       } else {
@@ -52,6 +53,7 @@ exports.googleAuthUser = (req, res, next) => {
             OTP: otp,
             activated: true,
             boarded: true,
+
             
           });
           newUser.save().then((user) => {
@@ -73,7 +75,8 @@ exports.googleAuthUser = (req, res, next) => {
               boarded: true,
               googleUser: true,
               imageUrl: user.imageUrl,
-              name: user.name
+              name: user.name,
+              userTyp:'client'
              
             });
           });
