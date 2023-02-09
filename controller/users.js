@@ -86,11 +86,8 @@ exports.getDone = (req, res, next) => {
           messsage: "No appointmtne with this id!",
         });
       }
-      if(userAppointment.done){
-        userAppointment.done = false
-      }else{
-        userAppointment.done = true
-      }
+    
+      userAppointment.done = true
       
       userAppointment.save();
 
